@@ -21,7 +21,7 @@ def create_database():
     Create and populate the finance.db SQLite database from CSV files.
     CSV files are located in ../credit-card-transactions relative to this file.
     """
-    base_path = os.path.join(os.path.dirname(__file__), "..", "credit-card-transactions")
+    base_path = os.path.join(os.path.dirname(__file__), "..", "data")
     
     users_path = os.path.join(base_path, "sd254_users.csv")
     cards_path = os.path.join(base_path, "sd254_cards.csv")
