@@ -1,6 +1,6 @@
 import pandas as pd
-from data_loader import load_table
-from categorizer import sample_from_chunks, MCC_TO_CATEGORY, add_category_column
+from .data_loader import load_table
+from .categorizer import sample_from_chunks, MCC_TO_CATEGORY, add_category_column
 
 def analyze_monthly_spending(transactions_df: pd.DataFrame) -> pd.DataFrame:
     """

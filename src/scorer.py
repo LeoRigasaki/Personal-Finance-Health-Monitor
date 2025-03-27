@@ -1,6 +1,6 @@
 import pandas as pd
-from data_loader import load_table
-from categorizer import sample_from_chunks
+from .data_loader import load_table
+from .categorizer import sample_from_chunks
 
 def calculate_financial_health(user_df: pd.DataFrame) -> pd.DataFrame:
     """

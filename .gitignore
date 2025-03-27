@@ -175,3 +175,7 @@ cython_debug/
 
 # Additional Files
 data/
+
+# Ignore database and model binaries
+src/finance.db
+models/

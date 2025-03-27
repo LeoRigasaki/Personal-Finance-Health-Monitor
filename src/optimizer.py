@@ -1,7 +1,7 @@
 import pandas as pd
-from data_loader import load_table
-from categorizer import add_category_column, sample_from_chunks
-from analyzer import format_amount
+from .data_loader import load_table
+from .categorizer import add_category_column, sample_from_chunks
+from .analyzer import format_amount
 
 def optimize_budget(actual_spending: pd.DataFrame, budget: dict) -> pd.DataFrame:
     """
