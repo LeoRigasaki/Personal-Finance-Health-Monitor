@@ -9,12 +9,29 @@ def get_connection():
     """Return a connection object to the SQLite DB."""
     return sqlite3.connect(DB_PATH)
 
-def load_table(table_name: str) -> pd.DataFrame:
-    """Load a table from the SQLite DB into a pandas DataFrame."""
+def load_table(table_name: str, chunksize: int = None) -> pd.DataFrame:
+    """
+    Load a table from the SQLite DB into a pandas DataFrame.
+    For large tables, use chunksize to load in smaller portions.
+    
+    Args:
+        table_name (str): Name of the table to load
+        chunksize (int, optional): Number of rows to load at a time. Defaults to None.
+    
+    Returns:
+        pd.DataFrame or iterator of DataFrames if chunksize is specified
+    """
     conn = get_connection()
-    df = pd.read_sql_query(f"SELECT * FROM {table_name}", conn)
-    conn.close()
-    return df
+    
+    # Get the number of rows in the table
+    row_count = pd.read_sql_query(f"SELECT COUNT(*) as count FROM {table_name}", conn).iloc[0]['count']
+    
+    # For tables with more than 100k rows, enforce chunked loading
+    if row_count > 100_000 and chunksize is None:
+        chunksize = 50_000  # Default chunk size for large tables
+        print(f"Table {table_name} has {row_count:,} rows. Using chunked loading with size {chunksize:,}.")
+    
+    return pd.read_sql_query(f"SELECT * FROM {table_name}", conn, chunksize=chunksize)
 
 def create_database():
     """
@@ -73,8 +90,25 @@ def create_database():
 
 if __name__ == "__main__":
     # Uncomment the next line to create/populate the database from CSV files.
-    create_database()
+    # create_database()
     
-    # Example: load the users table and print its shape.
     users = load_table("users")
-    print("Users table loaded with shape:", users.shape)
+    cards = load_table("cards")
+    tx_user0 = load_table("transactions_user0")
+    
+    # Load IBM transactions in chunks
+    tx_ibm_chunks = load_table("transactions_ibm")
+    if isinstance(tx_ibm_chunks, pd.DataFrame):
+        tx_ibm = tx_ibm_chunks
+    else:
+        # Process chunks as needed
+        chunk_list = []
+        for chunk in tx_ibm_chunks:
+            # You can process each chunk here if needed
+            chunk_list.append(chunk)
+        tx_ibm = pd.concat(chunk_list)
+
+    print("Users:", users.shape)
+    print("Cards:", cards.shape)
+    print("User0 Transactions:", tx_user0.shape)
+    print("IBM Transactions:", tx_ibm.shape)
