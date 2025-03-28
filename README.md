@@ -30,12 +30,12 @@ An intelligent system for tracking, analyzing, and optimizing personal finances 
 - [x] Create project structure
 - [x] Install required dependencies
 
-### Day 3: Core Analysis Features
+### Day 2: Core Analysis Features
 - [ ] Implement transaction categorization algorithm
 - [ ] Develop spending pattern analysis
 - [ ] Create initial data visualizations
 
-### Day 4: Advanced Features
+### Day 3: Advanced Features
 - [ ] Build budget optimization algorithms
 - [ ] Implement financial health scoring system
 - [ ] Create future scenario modeling
